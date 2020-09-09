@@ -15,6 +15,7 @@ function comparePopulation(cityA, cityB) {
 
 function loadData()
 {
+
     const text = fs.readFileSync(
         path.resolve(__dirname,'../datasets/uscities.json')
     );
@@ -40,7 +41,7 @@ function loadData()
 }
 
 //Returns an array of matching city names that start with input
-function findSimilar(input, pageStart, pageCount)
+function suggestMatchingCities(input, pageStart, pageCount)
 {
     if (!citiesLoaded)
     {
@@ -52,16 +53,32 @@ function findSimilar(input, pageStart, pageCount)
         return [];
     }
 
+    var inputArray = input.split(",");
+    var inputCity = inputArray[0];
+
     pageStart = pageStart || 0;
     pageCount = pageCount || 16;
 
-    const letter = input[0].toLowerCase();
+    const letter = inputCity[0].toLowerCase();
 
     var results = cityData.byFirstLetter[letter].filter(city => {
-        return city.cty.toLowerCase().startsWith(input.toLowerCase());
+        const cityMatch = city.cty.toLowerCase().startsWith(inputCity.toLowerCase());
+        
+        //If State was provided by input, match by state id as well 
+        if (cityMatch && inputArray.length > 1)
+        {
+            var inputState = inputArray[1].replace(/\s+/g, '').toLowerCase();
+            return city.sid.toLowerCase().startsWith(inputState);
+        } else
+        {
+            return cityMatch;
+        }
     });
 
     return results.slice(pageStart, pageStart + pageCount);
 }
 
-module.exports = findSimilar;
+module.exports = {
+    suggestMatchingCities : suggestMatchingCities,
+    preloadDataset : loadData
+}

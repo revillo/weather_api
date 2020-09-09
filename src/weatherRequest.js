@@ -2,10 +2,9 @@ const httpRequest = require('./httpRequest')
 
 //Function to request weather data from location string
 //Returns JSON data promise
-async function current(location)
+async function current(location, apiKey)
 {
-    //const urlPath = ['/data/2.5/weather?q=', location, '&APPID=8e9a932437825059609a14accc6f1489'].join('');
-    const urlPath = `/data/2.5/weather?q=${location}&APPID=8e9a932437825059609a14accc6f1489`
+    const urlPath = `/data/2.5/weather?q=${location}&APPID=${apiKey}`;
 
     var params = {
         host: 'api.openweathermap.org',
@@ -17,11 +16,9 @@ async function current(location)
     return httpRequest(params);    
 }
 
-async function oneCall(lat, lon)
+async function oneCall(lat, lon, apiKey)
 {
-    const urlPath = `/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&APPID=8e9a932437825059609a14accc6f1489`
-
-    console.log(encodeURI(urlPath));
+    const urlPath = `/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&APPID=${apiKey}`;
 
     var params = {
         host: 'api.openweathermap.org',
