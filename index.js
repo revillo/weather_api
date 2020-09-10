@@ -90,6 +90,6 @@ weatherAPI.get("/", (req, res) => {
 });
 
 //Start API
-weatherAPI.listen(process.env.PORT || 4000, () => {
+weatherAPI.listen(process.env.PORT || 2052, () => {
     console.log("API available");
 });

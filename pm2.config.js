@@ -6,11 +6,11 @@ module.exports = {
           watch: true,
           autorestart: true,
           env: {
-              "PORT": 4000,
+              "PORT": 2052,
               "NODE_ENV": "development"
           },
           env_production: {
-              "PORT": 4000,
+              "PORT": 2052,
               "NODE_ENV": "production",
           }
         }
