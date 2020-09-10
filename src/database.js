@@ -2,6 +2,8 @@
 var MongoClient = require("mongodb").MongoClient;
 var assert = require("assert")
 
+//This file is a stub and is not currently used
+//Leaving it here in case it makes sense to build a mongo db to cache weather results
 class Database
 {
     constructor(url, name)
@@ -31,46 +33,9 @@ class Database
         this.client.close();
     }
 
-    get users()
+    get weather()
     {
-        return this.db.collection('users')
-    }
-
-    async getAllUsers()
-    {
-        var db = this;
-        return new Promise((resolve, reject) =>
-        {
-            db.users.find({}).toArray((err, docs) => {
-                if(err) {
-                    db.logError(err);
-                    return reject (err);
-                }
-
-                resolve(docs);
-            });
-        });
-    }
-
-    async populateUsers()
-    {
-        const db = this;
-
-        return new Promise((resolve, reject) => {
-
-            db.users.drop((err, res) => {
-                
-                db.users.insertMany([{name:"Oliver", age:29}, {name:"Jodie", age:34}], (err, res) => {
-                    if (err) {
-                        db.logError(err);
-                        return reject(err);
-                    }
-
-                    resolve(res);
-                })
-
-            });
-        });
+        return this.db.collection('weather-cache')
     }
 
     logError(err)
