@@ -14,7 +14,7 @@ npm install
 ```
 npm run start:pm2
 ```
-Runs on port 4000 by default
+Runs on port 2052 by default
 
 ### Test
 ```
