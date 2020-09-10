@@ -1,5 +1,9 @@
 # Weather App API
 
+This is the backend module, see 
+[weather_client](https://github.com/revillo/weather_client)
+For client.
+
 ### Requirements
 NodeJS + npm
 
