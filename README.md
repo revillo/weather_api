@@ -5,7 +5,7 @@ This is the backend module, see
 For client.
 
 ### Requirements
-NodeJS + npm
+NodeJS (v12), NPM
 
 PM2 (npm install -g pm2@latest)
 
