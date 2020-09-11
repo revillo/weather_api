@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 const fs = require('fs');
 const path = require('path');
+var http = require('http');
 
 //src
 //const Database = require('./src/database');
@@ -17,7 +18,7 @@ weatherAPI.use(bodyParser.urlencoded({ extended: false }));
 weatherAPI.use(bodyParser.json());
 
 //Load Config file 
-const AppData = JSON.parse(
+const AppConfig = JSON.parse(
     fs.readFileSync(
         path.resolve(__dirname, 'default_config.json')
     )
@@ -46,7 +47,7 @@ weatherAPI.get("/current_weather", async (req, res) => {
         
     console.log("Location queried: ", req.query.location);
 
-    weatherRequest.current(req.query.location, AppData.OPEN_WEATHER_API_KEY)
+    weatherRequest.current(req.query.location, AppConfig.OPEN_WEATHER_API_KEY)
         .then(body => {
             res.json(body)
         })
@@ -64,7 +65,7 @@ weatherAPI.get("/one_call", async (req, res) => {
     
     const query = req.query;
 
-    weatherRequest.oneCall(query.lat, query.lon, AppData.OPEN_WEATHER_API_KEY)
+    weatherRequest.oneCall(query.lat, query.lon, AppConfig.OPEN_WEATHER_API_KEY)
         .then(body => {
             res.json({
                 query: query,
@@ -86,10 +87,31 @@ weatherAPI.get("/match_location", (req, res) => {
 });
 
 weatherAPI.get("/", (req, res) => {
-    res.send("Hello World");
+    res.send({status: "Online"});
 });
 
-//Start API
-weatherAPI.listen(process.env.PORT || 2052, () => {
-    console.log("API available");
-});
+
+//Launch Server
+
+var portNumber = process.env.PORT || AppConfig.PORT;
+
+var startPromise = new Promise((resolve, reject) => {
+
+    var server = http.createServer(weatherAPI);
+
+    server.on('error', err => {
+        reject();
+    })
+
+    server.listen(portNumber, () => {
+        console.log("API available: ", portNumber);
+        resolve(server);
+    });
+
+})
+
+module.exports = {
+    expressApp : weatherAPI,
+    startPromise : startPromise,
+    portNumber : portNumber
+}

@@ -1,6 +1,6 @@
 const http = require('http')
 
-//Promise based http requests, see
+//Promise based http requests for JSON, see
 //https://stackoverflow.com/q/38533580
 
 async function httpRequest(params, postData) {
